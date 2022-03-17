@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System;
 
-public class CrisperSpawner : MonoBehaviour
+public class SpawnerBase : MonoBehaviour
 {
-    public static event Action<CrisperEntity> CrisperSpawnEvent;
+    public static event Action<T> OnObjectSpawnedEvent;
 
     [SerializeField] private List<GameObject> _crisperPrefabs;
     [SerializeField] private List<Transform> _points;
@@ -25,6 +26,6 @@ public class CrisperSpawner : MonoBehaviour
 
     private void SendCrisperEntity(CrisperEntity crisperEntity)
     {
-        CrisperSpawnEvent?.Invoke(crisperEntity);
+        
     }
 }

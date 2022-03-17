@@ -7,7 +7,7 @@ public class Mover : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
 
     [SerializeField] private float _speed;
-    [SerializeField] private Vector3 MoveDirection;
+    [SerializeField] private Vector3 _moveDirection;
     private void Awake()
     {
         if (_rb == null)
@@ -21,7 +21,8 @@ public class Mover : MonoBehaviour
 
     private void Move()
     {
-        _rb.AddRelativeForce(MoveDirection * _speed - _rb.velocity);
+        var modeDelta = _moveDirection * _speed;
+        _rb.MovePosition(_rb.position + modeDelta);
     }
 
 }

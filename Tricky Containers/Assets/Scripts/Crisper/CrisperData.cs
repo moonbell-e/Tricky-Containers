@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Crispers", menuName = "Scriptable Objects/New Crisper")]
-public class CrisperData : ScriptableObject
+[CreateAssetMenu(fileName = "Crisper", menuName = "Scriptable Objects/New Crisper")]
+public partial class CrisperData : ScriptableObject
 {
     [SerializeField] private GameObject _crisperPrefab;
 
-    private enum CrisperType
-    {
-        FirstType,
-        SecondType,
-        ThirdType
-    };
-
     [SerializeField] private CrisperType _type;
+    public GameObject CrisperPrefab => _crisperPrefab;
+    public CrisperType CrisperType => _type;
 }

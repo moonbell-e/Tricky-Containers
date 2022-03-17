@@ -7,84 +7,86 @@ public class SwipeSystem : MonoBehaviour
     public static event Action<SwipeDirection> SwipeEvent;
 
     [Header("Debug")]
-    [SerializeField] Vector2 _tapPosition;
-    [SerializeField] Vector2 _swipeDelta;
+    [SerializeField] private Vector2 _tapPosition;
+    [SerializeField] private Vector2 _swipeDelta;
+    [SerializeField] private SwipeDirection _swipeDirection;
 
     [SerializeField] private float _triggerSwipeDelta = 20f;
 
-    [SerializeField] private State IsSwiping;
+    [SerializeField] private State _swipeState;
 
     private void Update()
     {
-        ButtonDown();
-        ButtonUp();
-        GetSwipeDelta();
+        OnButtonDown();
+        OnButtonUp();
         TrySwipe();
     }
-    private void GetSwipeDelta()
-    {
-        if (IsSwiping == State.Swipe)
-        {
-            if (Input.GetMouseButton(0))
-                _swipeDelta = (Vector2)Input.mousePosition - _tapPosition;
-        }
-        else
-        {
-            _swipeDelta = Vector2.zero;
-        }
-    }
-    private void GetSwipeDirection()
-    {
-        if (Mathf.Abs(_swipeDelta.x) > Mathf.Abs(_swipeDelta.y))
-        {
-            SwipeEvent?.Invoke(_swipeDelta.x > 0 ? SwipeDirection.Right : SwipeDirection.Left);
-        }
-        else
-            SwipeEvent?.Invoke(SwipeDirection.Down);
-    }
-    private bool TrySwipe()
-    {
-        bool _isShouldSwipe = _swipeDelta.magnitude > _triggerSwipeDelta;
 
+    private void GetInput()
+    {
+        _swipeDelta = GetSwipeDelta();
+        _swipeDirection = GetSwipeDirection(_swipeDelta);
+    }
+    private Vector2 GetSwipeDelta()
+    {
+        if (_swipeState == State.Swipe)
+            return (Vector2)Input.mousePosition - _tapPosition;
 
-        if (_isShouldSwipe)
+        return (Vector2.zero);
+    }
+    private SwipeDirection GetSwipeDirection(Vector2 swipeDelta)
+    {
+        if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+            return swipeDelta.x > 0 ? SwipeDirection.Left : SwipeDirection.Right;
+
+        return SwipeDirection.Down;
+    }
+    private bool DetectSwipe(SwipeDirection swipeDirection)
+    {
+        bool isShouldSwipe = _swipeDelta.magnitude > _triggerSwipeDelta;
+
+        if (isShouldSwipe)
         {
-            Swipe();
-            ResetSwipe();
+            Swipe(swipeDirection);
             return true;
         }
-        else
+
+        return false;
+    }
+    private void OnButtonDown()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
-            return false;
+            StartSwipe();
         }
     }
-    private void ButtonDown()
-    {
-        StartSwipe();
-    }
-    private void ButtonUp()
+    private void OnButtonUp()
     {
         if (Input.GetMouseButtonUp(0))
         {
-            _tapPosition = Input.mousePosition;
             ResetSwipe();
         }
     }
+
+    private void TrySwipe()
+    {
+        GetInput();
+        if (DetectSwipe(_swipeDirection))
+            ResetSwipe();
+    }
+    private void Swipe(SwipeDirection swipeDirection)
+    {
+        SwipeEvent?.Invoke(swipeDirection);
+    }
+
     private void StartSwipe()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            IsSwiping = State.Swipe;
-            _tapPosition = Input.mousePosition;
-        }
-    }
-    private void Swipe()
-    {
-        GetSwipeDirection();
+        _swipeState = State.Swipe;
+        _tapPosition = Input.mousePosition;
     }
     private void ResetSwipe()
     {
-        IsSwiping = State.None;
+        _swipeState = State.None;
         _tapPosition = Vector2.zero;
         _swipeDelta = Vector2.zero;
     }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1086027fab9a7043bd761618b875a27, type: 3}
   m_Name: Crisper3
   m_EditorClassIdentifier: 
-  _crisperPrefab: {fileID: 0}
-  _type: 0
+  _crisperPrefab: {fileID: 2845797066434516576, guid: fa2c4d349f572a840a6ec228973533d0, type: 3}
+  _type: 2
