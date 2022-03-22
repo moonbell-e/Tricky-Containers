@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5778579249654636820}
   - component: {fileID: 4920832919796230516}
   - component: {fileID: 4662593464624634151}
+  - component: {fileID: 7133289916359684176}
   m_Layer: 0
   m_Name: Crisper_I
   m_TagString: Untagged
@@ -42,14 +43,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6641148259903407471}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 10
+  m_Drag: 5
+  m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!114 &4920832919796230516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lightning: {fileID: 8214993433192571980}
-  isAccelerated: 1
+  _isTriggered: 0
 --- !u!114 &4662593464624634151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,13 +80,13 @@ MonoBehaviour:
   _rb: {fileID: 0}
   _speed: 0.01
   _moveDirection: {x: 0, y: -1, z: 0}
---- !u!64 &6368099539244914478
+--- !u!64 &7133289916359684176
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8268682690865999031}
+  m_GameObject: {fileID: 6641148259903407471}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -154,11 +155,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f2321d26211e00438aa2dc30007e124, type: 3}
---- !u!1 &8268682690865999031 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8498607422588987190, guid: 3f2321d26211e00438aa2dc30007e124, type: 3}
-  m_PrefabInstance: {fileID: 518298190451510145}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6010895894498099284 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6078628650674998229, guid: 3f2321d26211e00438aa2dc30007e124, type: 3}

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class BargeSunkSystem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] BargeEntity _currentBarge;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        _currentBarge.SunkBarge();
     }
 }
+

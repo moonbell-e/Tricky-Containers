@@ -4,22 +4,21 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class CrisperEntity : MonoBehaviour
 {
+    public static event Action<CrisperEntity, Collision> OnHitCollider;
+
     [SerializeField] private GameObject _lightning;
+    [SerializeField] private bool _isTriggered;
+
     private Rigidbody _rb;
     private float _fallSpeed;
-    [SerializeField] private bool isAccelerated;
-
-    public static event Action<CrisperEntity, Collision> OnHitCollider;
-    public GameObject Lightning => _lightning;
 
     private void Awake()
     {
         if (_rb == null)
             _rb = GetComponent<Rigidbody>();
 
-        _fallSpeed = 15f;
+        _fallSpeed = 100f;
     }
-
 
     public void MoveRight()
     {
@@ -34,27 +33,18 @@ public class CrisperEntity : MonoBehaviour
     }
     public void MoveDown()
     {
-        _rb.AddRelativeForce(new Vector3(0f, -1f * _fallSpeed, 0f), ForceMode.VelocityChange);
-        _rb.useGravity = isAccelerated;
+        _rb.AddForce(new Vector3(0f, -1f * _fallSpeed, 0f), ForceMode.Impulse);
     }
 
     public void ShowLightning(bool isShown)
     {
-        Lightning.SetActive(isShown);
+        _lightning.SetActive(isShown);
     }
 
     public void OnCollisionEnter(Collision collision)
     {
+        if (_isTriggered) return;
+        _isTriggered = true;
         OnHitCollider?.Invoke(this, collision);
     }
-
-    //public void DragMoveRight()
-    //{
-    //    _rb.MovePosition(new Vector3(transform.position.x + 0.5f, transform.position.y));
-    //}
-
-    //public void DragMoveLeft()
-    //{
-    //    _rb.MovePosition(new Vector3(transform.position.x - 0.5f, transform.position.y));
-    //}
 }

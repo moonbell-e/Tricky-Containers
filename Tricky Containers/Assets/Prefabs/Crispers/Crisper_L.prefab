@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1118638730354292193}
   - component: {fileID: 853084784911715468}
   - component: {fileID: 7312365216294028674}
+  - component: {fileID: 7957783956602608308}
+  - component: {fileID: 808744720222690376}
   m_Layer: 0
   m_Name: Crisper_L
   m_TagString: Untagged
@@ -42,14 +44,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826476642901154795}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 10
+  m_Drag: 5
+  m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!114 &853084784911715468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lightning: {fileID: 2701497734393095568}
-  isAccelerated: 1
+  _isTriggered: 0
 --- !u!114 &7312365216294028674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +81,32 @@ MonoBehaviour:
   _rb: {fileID: 0}
   _speed: 0.01
   _moveDirection: {x: 0, y: -1, z: 0}
+--- !u!65 &7957783956602608308
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826476642901154795}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9745785, y: 0.6777938, z: 1.1091807}
+  m_Center: {x: -0.00047582388, y: 0.3389006, z: 0.00000011920929}
+--- !u!65 &808744720222690376
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826476642901154795}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6522708, y: 1.3410345, z: 1.1091807}
+  m_Center: {x: -0.6616297, y: 0.67052096, z: 0.00000011920929}
 --- !u!1001 &4680869661803160454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -134,7 +162,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6432635942373795201, guid: 091ce36aba4f2354ebad0f98f52b4476, type: 3}
+    - {fileID: 1409653799061478056, guid: 091ce36aba4f2354ebad0f98f52b4476, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 091ce36aba4f2354ebad0f98f52b4476, type: 3}
 --- !u!4 &8488037402934159659 stripped
 Transform:

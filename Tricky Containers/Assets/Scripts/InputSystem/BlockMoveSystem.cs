@@ -2,17 +2,15 @@ using UnityEngine;
 
 public class BlockMoveSystem : MonoBehaviour
 {
-    [SerializeField] private CrisperEntity _currentCrisper;
+    public CrisperEntity CurrentCrisper;
 
     private void OnEnable()
     {
         SwipeSystem.SwipeEvent += OnSwipeInput;
-        CrisperSpawner.CrisperSpawnEvent += OnCrisperSpawn; 
     }
     private void OnDisable()
     {
         SwipeSystem.SwipeEvent -= OnSwipeInput;
-        CrisperSpawner.CrisperSpawnEvent -= OnCrisperSpawn;
     }
 
     private void OnSwipeInput(SwipeDirection swipeDirection)
@@ -36,26 +34,21 @@ public class BlockMoveSystem : MonoBehaviour
                 }
         }
     }
+
     private void MoveRight()
     {
-        _currentCrisper.MoveRight();
+        CurrentCrisper.MoveRight();
     }
 
     private void MoveLeft()
     {
-        _currentCrisper.MoveLeft();
+        CurrentCrisper.MoveLeft();
     }
 
     private void MoveDown()
     {
-        _currentCrisper.MoveDown();
+        CurrentCrisper.MoveDown();
     }
-
-    private void OnCrisperSpawn(CrisperEntity crisper)
-    {
-        _currentCrisper = crisper;
-    }
-
     public void DisablePlayerInput()
     {
         this.enabled = false;

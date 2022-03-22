@@ -55,6 +55,7 @@ public class Shaker : MonoBehaviour
                 yield return null;
             }
             _camera.localPosition = originalPos;
+            _cameraShakeAmplitude = 0.1f;
         }
         else
         {
