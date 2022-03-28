@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 4782914023756345139}
   - component: {fileID: 1464401300202413657}
   - component: {fileID: 6318162144769328424}
-  - component: {fileID: 633024455165551759}
-  - component: {fileID: 5036512761397390857}
   - component: {fileID: -1122805573373454663}
   m_Layer: 0
   m_Name: Z_Model
@@ -85,32 +83,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947052240916990575}
   m_Mesh: {fileID: 3141120828048097299, guid: 572c69b3cb4dd1a4dbf1c167c4a91c49, type: 3}
---- !u!65 &633024455165551759
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947052240916990575}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.6622267, y: 1.3452737, z: 1.1091807}
-  m_Center: {x: -0.32702625, y: 1.3372937, z: 0}
---- !u!65 &5036512761397390857
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947052240916990575}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.67211, y: 1.3509809, z: 1.1091807}
-  m_Center: {x: 0.32257894, y: 0.67549044, z: 0}
 --- !u!96 &-1122805573373454663
 TrailRenderer:
   serializedVersion: 2

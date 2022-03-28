@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text _crisperCounterText;
     [SerializeField] private GameObject _winUI;
     [SerializeField] private GameObject _loseUI;
+    [SerializeField] private Animator _waveAnimaton;
+    [SerializeField] private Animator _counterAnimaton;
+    [SerializeField] private Transform _crispersOnBarge;
 
 
-    private bool _isWinned;
+    public bool IsWinned;
     public bool IsLost;
-    private BargeEntity _bargeEntity;
+    [SerializeField] private BargeEntity _bargeEntity;
 
     #region Singleton Init
     private static GameManager _instance;
@@ -63,17 +67,19 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (_isWinned)
+        if (IsWinned && !IsLost)
         {
             _winUI.SetActive(true);
-            _bargeEntity.gameObject.transform.Translate(Vector3.left * Time.deltaTime * 5f);
+            OnEvent_CrisperHitFinishLine();
+            _bargeEntity.gameObject.transform.Translate(Vector3.left * Time.deltaTime * 2f);
+            _bargeEntity.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f), Time.deltaTime);
         }
-
-        if (IsLost)
-        { 
+        if (IsLost && !IsWinned)
+        {
             _loseUI.SetActive(true);
             _blockMoveSystem.enabled = false;
-            _bargeEntity.gameObject.transform.Translate(Vector3.down * Time.deltaTime);
+            _waveAnimaton.Play("WaveAnimationClip");
+            _bargeEntity.gameObject.transform.Translate(Vector3.down * Time.deltaTime * 0.5f);
         }
     }
 
@@ -85,42 +91,47 @@ public class GameManager : MonoBehaviour
         }
         else if (collision.gameObject.TryGetComponent<CrisperEntity>(out var crisperEntity))
         {
+            if (collision.gameObject.CompareTag("Tractor"))
+                IsLost = true;
             OnEvent_CrisperHitCrisper(crisper, crisperEntity);
-        }
-        else if(collision.gameObject.TryGetComponent<FinishLineEntity>(out var finishLineEntity))
-        {
-            OnEvent_CrisperHitFinishLine();
+            if (crisper.transform.position.y > 6.5f)
+            {
+                OnEvent_CrisperHitFinishLine();
+            }
         }
     }
 
     private void OnEvent_CrisperHitFinishLine()
     {
-        _isWinned = true;
+        IsWinned = true;
         _blockMoveSystem.enabled = false;
     }
 
     private void OnEvent_CrisperHitBarge(CrisperEntity crisper, BargeEntity bargeEntity)
     {
+        //crisper.GetComponent<Rigidbody>().useGravity = true;
+        crisper.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX;
         GetLandParticles(_crisperLandEffect, crisper).Play();
         SpawnNewCrisper();
-        _blockMoveSystem.CurrentCrisper = _crisperSpawner.CrisperEntity;
-        crisper.ShowLightning(false);
+        _crisperSpawner.LastSpawnedCrisper.transform.SetParent(_crispersOnBarge);
+        _waveAnimaton.Play("WaveAnimationClip", -1, 0f);
+        BendBarge(bargeEntity);
+        CrisperActions(crisper);
         Shaker.Instance.ShakeCamera();
-        LastCrisperPosition = -crisper.transform.position.x;
-        _bargeEntity = bargeEntity;
-        _bargeEntity.MakeBend();
     }
 
-    private void OnEvent_CrisperHitCrisper(CrisperEntity crisper,  CrisperEntity hittedCrisper)
+    private void OnEvent_CrisperHitCrisper(CrisperEntity crisper, CrisperEntity hittedCrisper)
     {
+        //crisper.GetComponent<Rigidbody>().useGravity = true;
+        crisper.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX;
         hittedCrisper.enabled = false;
         GetLandParticles(_crisperLandEffect, crisper).Play();
         SpawnNewCrisper();
-        _blockMoveSystem.CurrentCrisper = _crisperSpawner.CrisperEntity;
-        crisper.ShowLightning(false);
+        _waveAnimaton.Play("WaveAnimationClip", -1, 0f);
+        BendBargeTakeCrispers();
+        CrisperActions(crisper);
         Shaker.Instance.ShakeCamera();
-        LastCrisperPosition = -crisper.transform.position.x;
-        _bargeEntity.MakeBend();
+
     }
 
     private void OnEvent_OnCrisperSpawned(CrisperSpawner crisperSpawner)
@@ -135,7 +146,11 @@ public class GameManager : MonoBehaviour
         Debug.Log(barge.name);
     }
 
-    private void OnEventCrisperCount(int newCount) => _crisperCounterText.text = newCount.ToString();
+    private void OnEventCrisperCount(int newCount)
+    {
+        _crisperCounterText.text = newCount.ToString();
+        _counterAnimaton.Play("CounterAnimationClip", -1, 0f);
+    }
 
     private ParticleSystem GetLandParticles(GameObject crisperLandEffect, CrisperEntity crisper)
     {
@@ -145,10 +160,27 @@ public class GameManager : MonoBehaviour
 
     private void SpawnNewCrisper()
     {
-        if (!_isWinned || (!IsLost))
+        if (!IsWinned || (!IsLost))
             _crisperSpawner.SpawnRandom();
     }
 
+    private void CrisperActions(CrisperEntity crisper)
+    {
+        _blockMoveSystem.CurrentCrisper = _crisperSpawner.CrisperEntity;
+        crisper.ShowLightning(false);
+        LastCrisperPosition = -crisper.transform.position.x;
+    }
+
+    private void BendBarge(BargeEntity bargeEntity)
+    {
+        _bargeEntity = bargeEntity;
+        bargeEntity.MakeBend();
+    }
+    private void BendBargeTakeCrispers()
+    {
+        _crisperSpawner.LastSpawnedCrisper.transform.SetParent(_crispersOnBarge);
+        _bargeEntity.MakeBend();
+    }
     private void Initialize()
     {
         enabled = true;

@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1797505571323011840, guid: 1d61cf6e86234ed4b9764a8ec11f8794, type: 3}
+  - {fileID: 2100000, guid: 851a864a8c3108d4b843438a9cc10bce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 5307641116820179327}
   - component: {fileID: 4049043348859007206}
   - component: {fileID: 4322385054492288639}
+  - component: {fileID: 3672533712243831417}
   m_Layer: 0
   m_Name: Barge
   m_TagString: Untagged
@@ -127,9 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce673c07e13c07148811524c2e09f187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameManager: {fileID: 0}
   _timer: 2
   _isShouldBend: 0
+  _previousPos: 0
 --- !u!65 &4049043348859007206
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -137,7 +138,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5001791267408848264}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 3ac7c3451a154de48a417411ac3aab20, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -150,9 +151,28 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5001791267408848264}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 3ac7c3451a154de48a417411ac3aab20, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 7.2741237, y: 2.0589635, z: 3.3887494}
   m_Center: {x: -2.2676337, y: 1.0294408, z: 0.10192549}
+--- !u!95 &3672533712243831417
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5001791267408848264}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cda070474ebee9446acdee4881f3d559, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

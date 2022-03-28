@@ -45,13 +45,13 @@ Rigidbody:
   m_GameObject: {fileID: 826476642901154795}
   serializedVersion: 2
   m_Mass: 10
-  m_Drag: 5
+  m_Drag: 10
   m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
-  m_CollisionDetection: 0
+  m_Constraints: 48
+  m_CollisionDetection: 2
 --- !u!114 &853084784911715468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lightning: {fileID: 2701497734393095568}
   _isTriggered: 0
+  _isAccelerated: 1
 --- !u!114 &7312365216294028674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,7 +89,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826476642901154795}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 0ee9cd1dfd9950f43a1c755be6f3aab1, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -101,7 +102,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826476642901154795}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 0ee9cd1dfd9950f43a1c755be6f3aab1, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
