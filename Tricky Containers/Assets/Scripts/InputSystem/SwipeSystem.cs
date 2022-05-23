@@ -15,8 +15,15 @@ public class SwipeSystem : MonoBehaviour
 
     [SerializeField] private State _swipeState;
 
+    private Touch _touch;
+
     private void Update()
     {
+        if (Input.touchCount == 0)
+            return;
+
+        _touch = Input.GetTouch(0);
+
         OnButtonDown();
         OnButtonUp();
         TrySwipe();
@@ -30,7 +37,7 @@ public class SwipeSystem : MonoBehaviour
     private Vector2 GetSwipeDelta()
     {
         if (_swipeState == State.Swipe)
-            return (Vector2)Input.mousePosition - _tapPosition;
+            return _touch.position - _tapPosition;
 
         return (Vector2.zero);
     }
@@ -55,14 +62,14 @@ public class SwipeSystem : MonoBehaviour
     }
     private void OnButtonDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (_touch.phase == TouchPhase.Began)
         {
             StartSwipe();
         }
     }
     private void OnButtonUp()
     {
-        if (Input.GetMouseButtonUp(0))
+        if ((_touch.phase == TouchPhase.Ended || _touch.phase == TouchPhase.Canceled))
         {
             ResetSwipe();
         }
@@ -82,7 +89,7 @@ public class SwipeSystem : MonoBehaviour
     private void StartSwipe()
     {
         _swipeState = State.Swipe;
-        _tapPosition = Input.mousePosition;
+        _tapPosition = _touch.position;
     }
     private void ResetSwipe()
     {

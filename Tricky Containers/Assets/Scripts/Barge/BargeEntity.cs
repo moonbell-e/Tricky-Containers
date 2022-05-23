@@ -37,10 +37,16 @@ public class BargeEntity : MonoBehaviour
 
     public void SunkBarge()
     {
-        if (transform.rotation.z > 0.15f || transform.rotation.z < -0.15f && GameManager.Instance.IsWinned)
+        if (transform.rotation.z > 0.15f || transform.rotation.z < -0.15f && GameManager.Instance.IsWinned == false)
         {
             GameManager.Instance.IsLost = true;
+            MyFacebook.Instance.OnLevelFailed();
+            MyGameAnalytics.OnLevelFailed();
             transform.Translate(Vector3.down * Time.deltaTime);
+            GameManager.Instance.ResetUI.SetActive(true);
+            GameManager.Instance.LoseUI.SetActive(true);
+            GameManager.Instance.BlockMoveSystem.enabled = false;
+            GameManager.Instance.BargeEntity.gameObject.transform.Translate(Vector3.down * Time.deltaTime * 0.5f);
         }
     }
 }

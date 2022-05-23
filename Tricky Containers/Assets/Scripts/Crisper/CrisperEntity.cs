@@ -11,7 +11,7 @@ public class CrisperEntity : MonoBehaviour
     [SerializeField] private bool _isAccelerated;
 
     private Rigidbody _rb;
-    private float _fallSpeed = 10f;
+    private float _fallSpeed = 20f;
 
     private void Awake()
     {

@@ -37,6 +37,7 @@ public class CrisperSpawner : MonoBehaviour
     {
         if (_isTriggered) return;
         _isTriggered = true;
+
         OnCrisperSpawnedEvent?.Invoke(this);
         IncreaseBorders(ref minimumWaypoint, ref maximumWaypoint);
     }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
-using System.Linq;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,16 +10,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CrisperSpawner _crisperSpawner;
     [SerializeField] private GameObject _crisperLandEffect;
     [SerializeField] private TMP_Text _crisperCounterText;
+
     [SerializeField] private GameObject _winUI;
     [SerializeField] private GameObject _loseUI;
+    [SerializeField] private GameObject _resetUI;
+
     [SerializeField] private Animator _waveAnimaton;
     [SerializeField] private Animator _counterAnimaton;
     [SerializeField] private Transform _crispersOnBarge;
-
+    private int i;
 
     public bool IsWinned;
     public bool IsLost;
     [SerializeField] private BargeEntity _bargeEntity;
+
+    public GameObject LoseUI => _loseUI;
+    public GameObject ResetUI => _resetUI;
+    public BargeEntity BargeEntity => _bargeEntity;
+
+    public BlockMoveSystem BlockMoveSystem => _blockMoveSystem;
 
     #region Singleton Init
     private static GameManager _instance;
@@ -65,24 +75,16 @@ public class GameManager : MonoBehaviour
         BargeSpawner.OnBargeSpawnedEvent -= OnEvent_OnBargeSpawned;
     }
 
-    private void Update()
+    private void Start()
     {
-        if (IsWinned && !IsLost)
-        {
-            _winUI.SetActive(true);
-            OnEvent_CrisperHitFinishLine();
-            _bargeEntity.gameObject.transform.Translate(Vector3.left * Time.deltaTime * 2f);
-            _bargeEntity.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f), Time.deltaTime);
-        }
-        if (IsLost && !IsWinned)
-        {
-            _loseUI.SetActive(true);
-            _blockMoveSystem.enabled = false;
-            _waveAnimaton.Play("WaveAnimationClip");
-            _bargeEntity.gameObject.transform.Translate(Vector3.down * Time.deltaTime * 0.5f);
-        }
+        StartCoroutine(StartLevel(i));
     }
 
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        i++;
+    }
     private void OnEvent_CrisperHitCollider(CrisperEntity crisper, Collision collision)
     {
         if (collision.gameObject.TryGetComponent<BargeEntity>(out var barge))
@@ -92,7 +94,14 @@ public class GameManager : MonoBehaviour
         else if (collision.gameObject.TryGetComponent<CrisperEntity>(out var crisperEntity))
         {
             if (collision.gameObject.CompareTag("Tractor"))
+            {
                 IsLost = true;
+                _resetUI.SetActive(true);
+                _loseUI.SetActive(true);
+                _blockMoveSystem.enabled = false;
+                _waveAnimaton.Play("WaveAnimationClip");
+                _bargeEntity.gameObject.transform.Translate(Vector3.down * Time.deltaTime * 0.5f);
+            }
             OnEvent_CrisperHitCrisper(crisper, crisperEntity);
             if (crisper.transform.position.y > 6.5f)
             {
@@ -104,12 +113,17 @@ public class GameManager : MonoBehaviour
     private void OnEvent_CrisperHitFinishLine()
     {
         IsWinned = true;
+        MyFacebook.Instance.OnLevelCompleted();
+        MyGameAnalytics.OnLevelCompleted();
+        _resetUI.SetActive(true);
+        _winUI.SetActive(true);
+        _bargeEntity.gameObject.transform.Translate(Vector3.left * Time.deltaTime * 2f);
+        _bargeEntity.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f), Time.deltaTime);
         _blockMoveSystem.enabled = false;
     }
 
     private void OnEvent_CrisperHitBarge(CrisperEntity crisper, BargeEntity bargeEntity)
     {
-        //crisper.GetComponent<Rigidbody>().useGravity = true;
         crisper.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX;
         GetLandParticles(_crisperLandEffect, crisper).Play();
         SpawnNewCrisper();
@@ -122,7 +136,6 @@ public class GameManager : MonoBehaviour
 
     private void OnEvent_CrisperHitCrisper(CrisperEntity crisper, CrisperEntity hittedCrisper)
     {
-        //crisper.GetComponent<Rigidbody>().useGravity = true;
         crisper.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX;
         hittedCrisper.enabled = false;
         GetLandParticles(_crisperLandEffect, crisper).Play();
@@ -181,6 +194,14 @@ public class GameManager : MonoBehaviour
         _crisperSpawner.LastSpawnedCrisper.transform.SetParent(_crispersOnBarge);
         _bargeEntity.MakeBend();
     }
+
+    IEnumerator StartLevel(int i)
+    {
+        yield return new WaitForSeconds(1.0f);
+        MyFacebook.Instance.OnLevelStart(i);
+        MyGameAnalytics.OnLevelStart(i);
+    }
+
     private void Initialize()
     {
         enabled = true;
