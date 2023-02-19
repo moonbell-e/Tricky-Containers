@@ -1,4 +1,4 @@
-# TrickyContainers
+# Tricky Containers
 
 ## EN
 This was my test task for Unity Developer's position.
